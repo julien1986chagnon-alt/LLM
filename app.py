@@ -13,9 +13,9 @@ st.subheader("Pilotez votre IA pour extraire les points forts de vos PDF")
 @st.cache_resource
 def initialiser_ia():
     try:
-        # ⚠️ REMPLACEZ LES XXXXX PAR VOTRE VRAIE CLÉ GEMINI ENTRE LES GUILLEMETS ⚠️
-        # Exemple : api_key="AIzaSy..."
-        return genai.Client(api_key="GEMINI_API_KEY=AIzaSyVotreCleReelleRecupereeSurGoogleAIStudio") 
+        # Récupération sécurisée depuis les Secrets de Streamlit
+        cle_api = st.secrets["GEMINI_API_KEY"]
+        return genai.Client(api_key=cle_api) 
     except Exception as e:
         st.error(f"Erreur d'initialisation de l'API : {e}")
         return None
