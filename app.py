@@ -15,7 +15,8 @@ def initialiser_ia():
         # Récupération du jeton gratuit depuis les Secrets de Streamlit
         token_hf = st.secrets["HF_TOKEN"]
         # Utilisation de l'API sans modèle forcé (sélectionne le meilleur modèle de chat disponible)
-        return InferenceClient(token=token_hf)
+        return InferenceClient("Qwen/Qwen2.5-7B-Instruct", token=token_hf)
+
     except Exception as e:
         st.error(f"Erreur d'initialisation de l'API : {e}")
         return None
