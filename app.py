@@ -20,6 +20,7 @@ def initialiser_ia():
         st.error(f"Erreur d'initialisation de l'API : {e}")
         return None
 
+
 gemini_client = initialiser_ia()
 
 # 2. INTERFACE DE TÉLÉCHARGEMENT (PILOTAGE)
