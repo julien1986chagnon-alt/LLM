@@ -14,8 +14,8 @@ def initialiser_ia():
     try:
         # Récupération du jeton gratuit depuis les Secrets de Streamlit
         token_hf = st.secrets["HF_TOKEN"]
-        # Utilisation du modèle Llama 3.2 officiel et stable
-        return InferenceClient("meta-llama/Llama-3.2-3B-Instruct", token=token_hf)
+        # Utilisation d'un modèle public et totalement libre d'accès
+        return InferenceClient("HuggingFaceH4/zephyr-7b-alpha", token=token_hf)
     except Exception as e:
         st.error(f"Erreur d'initialisation de l'API : {e}")
         return None
@@ -64,3 +64,4 @@ QUESTION DE L'UTILISATEUR :
                 
             except Exception as e:
                 st.error(f"Une erreur est survenue lors de l'analyse : {e}")
+
