@@ -14,7 +14,7 @@ def initialiser_ia():
     try:
         # Récupération du jeton gratuit depuis les Secrets de Streamlit
         token_hf = st.secrets["HF_TOKEN"]
-        # Utilisation d'un excellent modèle open-source gratuit
+        # Utilisation de l'API sans modèle forcé (sélectionne le meilleur modèle de chat disponible)
         return InferenceClient(token=token_hf)
     except Exception as e:
         st.error(f"Erreur d'initialisation de l'API : {e}")
@@ -41,16 +41,22 @@ if fichier_uploade is not None and ia_client is not None:
                     texte_complet += page.extract_text() + "\n"
                 
                 # PROMPT POUR LE MODÈLE
-                prompt_pilote = f"""<|begin_of_text|><|start_header_id|>system<|end_header_id|>
-Tu es un expert en synthèse documentaire. Réponds en français en te basant UNIQUEMENT sur le texte fourni. Va droit au but.<|eot_id|><|start_header_id|>user<|end_header_id|>
+                prompt_pilote = f"""
+Tu es un expert en synthèse documentaire. Réponds en français en te basant UNIQUEMENT sur le texte fourni ci-dessous. Va droit au but, élimine le jargon inutile et utilise des puces claires pour structurer ta réponse.
+
 DOCUMENT :
 {texte_complet}
 
-QUESTION :
-{question_utilisateur}<|eot_id|><|start_header_id|>assistant<|end_header_id|>"""
+QUESTION DE L'UTILISATEUR :
+{question_utilisateur}
+"""
 
-                # APPEL AU MODÈLE HUGGING FACE
-                output = ia_client.text_generation(prompt_pilote, max_new_tokens=1024)
+                # CORRECTION MAJEURE : Utilisation de chat_completion au lieu de text_generation
+                reponse = ia_client.chat_completion(
+                    messages=[{"role": "user", "content": prompt_pilote}],
+                    max_tokens=1024
+                )
+                output = reponse.choices[0].message.content
                 
                 # AFFICHAGE DU RÉSULTAT
                 st.markdown("### 📊 Synthèse Exécutive")
