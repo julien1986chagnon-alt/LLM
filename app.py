@@ -14,10 +14,8 @@ def initialiser_ia():
     try:
         # Récupération du jeton gratuit depuis les Secrets de Streamlit
         token_hf = st.secrets["HF_TOKEN"]
-        # Utilisation de l'API sans modèle forcé (sélectionne le meilleur modèle de chat disponible)
-       return InferenceClient("HuggingFaceH4/zephyr-7b-beta", token=token_hf)
-
-
+        # Utilisation d'un modèle ultra-stable et gratuit
+        return InferenceClient("HuggingFaceH4/zephyr-7b-beta", token=token_hf)
     except Exception as e:
         st.error(f"Erreur d'initialisation de l'API : {e}")
         return None
@@ -53,12 +51,12 @@ QUESTION DE L'UTILISATEUR :
 {question_utilisateur}
 """
 
-                # CORRECTION MAJEURE : Utilisation de chat_completion au lieu de text_generation
+                # APPEL DE DISCUSSION COMPATIBLE AVEC ZEPHYR
                 reponse = ia_client.chat_completion(
                     messages=[{"role": "user", "content": prompt_pilote}],
                     max_tokens=1024
                 )
-                output = reponse.choices[0].message.content
+                output = reponse.choices.message.content
                 
                 # AFFICHAGE DU RÉSULTAT
                 st.markdown("### 📊 Synthèse Exécutive")
