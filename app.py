@@ -15,7 +15,7 @@ def initialiser_ia():
     try:
         # Récupération sécurisée depuis les Secrets de Streamlit
         cle_api = st.secrets["GEMINI_API_KEY"]
-        return genai.Client(api_key=cle_api) 
+        return genai.Client(api_key=cle_api)
     except Exception as e:
         st.error(f"Erreur d'initialisation de l'API : {e}")
         return None
